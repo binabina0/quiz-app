@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 @Entity
-public class Quiz {
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private int id;
