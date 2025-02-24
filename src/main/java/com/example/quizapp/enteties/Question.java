@@ -9,7 +9,7 @@ import lombok.*;
 //@Table(name = "question")
 public class Question {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 //    @Column(name = "question_title")
     private String questionTitle;
