@@ -44,4 +44,9 @@ public class QuestionService {
         return new ResponseEntity<>("Can't add", HttpStatus.BAD_REQUEST);
 
     }
+
+    public ResponseEntity<String> updateQuestion(Question question) {
+        questionDao.save(question);
+        return new ResponseEntity<>("Question updated successfully", HttpStatus.OK);
+    }
 }
