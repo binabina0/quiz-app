@@ -1,12 +1,14 @@
 package com.example.quizapp.controllers;
 
 import com.example.quizapp.enteties.Question;
+import com.example.quizapp.services.QuizService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.example.quizapp.services.QuestionService;
 
+import java.sql.Struct;
 import java.util.List;
 
 @RestController
@@ -15,6 +17,9 @@ public class QuestionController {
 
     @Autowired
     QuestionService questionService;
+    @Autowired
+    private QuizService quizService;
+
     @GetMapping("allQuestions")
     public ResponseEntity<List<Question>> getAllQuestions() {
         return questionService.getAllQuestions();
@@ -32,5 +37,10 @@ public class QuestionController {
     @PutMapping("update")
     public ResponseEntity<String> updateQuestion(@RequestBody Question question) {
         return questionService.updateQuestion(question);
+    }
+
+    @DeleteMapping("delete/{id}")
+    public ResponseEntity<String> deleteQuestion(@PathVariable int id) {
+        return questionService.deleteQuestion(id);
     }
 }
