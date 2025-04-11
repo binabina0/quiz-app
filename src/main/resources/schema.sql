@@ -1,20 +1,18 @@
-drop table if exists question ;
-delete from question;
-CREATE TABLE question (
-                          id SERIAL PRIMARY KEY,
-                          question_title varchar(555),
-                          option1 varchar(555),
-                          option2 varchar(555),
-                          option3 varchar(555),
-                          option4 varchar(555),
-                          right_answer varchar(555),
-                          difficulty_level varchar(555),
-                          category varchar(555)
-);
-
-
-INSERT INTO question (question_title, option1, option2, option3, option4, right_answer, difficulty_level, category)
-VALUES
+CREATE TABLE IF NOT EXISTS question (
+                                        id INT AUTO_INCREMENT PRIMARY KEY,
+                                        question_title VARCHAR(555),
+    option1 VARCHAR(555),
+    option2 VARCHAR(555),
+    option3 VARCHAR(555),
+    option4 VARCHAR(555),
+    right_answer VARCHAR(555),
+    difficulty_level VARCHAR(555),
+    category VARCHAR(555)
+    );
+INSERT INTO question (
+    question_title, option1, option2, option3, option4,
+    right_answer, difficulty_level, category
+) VALUES
     ('What is a class in Java?', 'A function', 'An object', 'A data structure', 'A loop', 'An object', 'Easy', 'java'),
     ('What does OOP stand for?', 'Object-Oriented Programming', 'Object Ordering Process', 'Operating Overloaded Pointers', 'Order of Operations', 'Object-Oriented Programming', 'Easy', 'java'),
     ('What is a list in Python?', 'A type of loop', 'A built-in function', 'A data structure', 'An object', 'A data structure', 'Easy', 'python'),
@@ -36,7 +34,7 @@ VALUES
     ('What is a linked list?', 'A type of array', 'A linear data structure', 'A collection of objects', 'A group of classes', 'A linear data structure', 'Medium', 'java'),
     ('Which operator is used to concatenate strings in Python?', '&', '+', '*', '++', '+', 'Easy', 'python'),
     ('What does JVM stand for?', 'Java Virtual Machine', 'Just Virtual Memory', 'JavaScript Virtual Machine', 'Java Version Manager', 'Java Virtual Machine', 'Easy', 'java'),
-    ('In Python, what is the main difference between a tuple and a list?', 'Tuples are mutable, lists are not', 'Lists are ordered, tuples are not', 'Tuples can store mixed data types, lists cannot', 'Lists have a fixed size, tuples do not', 'Tuples can store mixed data types, lists cannot', 'Medium', 'python'),
+    ('In Python, what is the main difference between a tuple and a list?', 'Tuples are immutable, lists are mutable', 'Lists are ordered, tuples are not', 'Tuples can store mixed data types, lists cannot', 'Lists have a fixed size, tuples do not', 'Tuples are immutable, lists are mutable', 'Medium', 'python'),
     ('What is the purpose of the "finally" block in a try-catch-finally statement?', 'To handle exceptions', 'To define a fallback value', 'To execute code regardless of exceptions', 'To terminate the program', 'To execute code regardless of exceptions', 'Medium', 'java'),
     ('What is a dictionary in Python?', 'A sorted collection of elements', 'A data structure used for searching', 'An ordered sequence of elements', 'A key-value store', 'A key-value store', 'Easy', 'python'),
     ('Which keyword is used to define a subclass in Java?', 'child', 'extends', 'inherits', 'subclass', 'extends', 'Easy', 'java'),
