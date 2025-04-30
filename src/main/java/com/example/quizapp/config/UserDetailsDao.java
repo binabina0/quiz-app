@@ -1,10 +1,7 @@
-package com.example.quizapp.dao;
+package com.example.quizapp.config;
 
 import com.example.quizapp.enteties.Role;
 import com.example.quizapp.enteties.User;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -13,15 +10,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class UserDetailsDao implements UserDetails {
-    private long id;
-    private String username;
-    private String password;
-    private String email;
-    private Collection<? extends GrantedAuthority> authorities;
+    private final long id;
+    private final String username;
+    private final String password;
+    private final String email;
+    private final Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsDao(User user) {
         id = user.getId();
@@ -33,10 +27,33 @@ public class UserDetailsDao implements UserDetails {
             authorities = roles
                 .stream()
                 .map(role ->
-                        new SimpleGrantedAuthority(role.toString()))
+                        new SimpleGrantedAuthority(role.name()))
                 .toList();}
         else {
             authorities = Collections.emptyList();
         }
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 }

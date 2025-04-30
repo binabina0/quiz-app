@@ -20,7 +20,8 @@ public class User {
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
     private List<Role> roles;
-//    private boolean enabled;
+    private boolean enabled;
 //    private String verificationCode;
+//    private String refreshToken;
 
 }
