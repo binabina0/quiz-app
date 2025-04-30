@@ -17,12 +17,14 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDetailsDao implements UserDetails {
+    private long id;
     private String username;
     private String password;
     private String email;
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsDao(User user) {
+        id = user.getId();
         username = user.getUsername();
         password = user.getPassword();
         email = user.getEmail();
@@ -36,6 +38,5 @@ public class UserDetailsDao implements UserDetails {
         else {
             authorities = Collections.emptyList();
         }
-
     }
 }
