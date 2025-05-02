@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserDetailsDao implements UserDetails {
     private final long id;
@@ -22,16 +23,19 @@ public class UserDetailsDao implements UserDetails {
         username = user.getUsername();
         password = user.getPassword();
         email = user.getEmail();
-        List<Role> roles = user.getRoles();
-        if (roles != null) {
-            authorities = roles
-                .stream()
-                .map(role ->
-                        new SimpleGrantedAuthority(role.name()))
-                .toList();}
-        else {
-            authorities = Collections.emptyList();
-        }
+        authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                .collect(Collectors.toList());
+//        List<Role> roles = user.getRoles();
+//        if (roles != null) {
+//            authorities = roles
+//                .stream()
+//                .map(role ->
+//                        new SimpleGrantedAuthority(role.name()))
+//                .toList();}
+//        else {
+//            authorities = Collections.emptyList();
+//        }
     }
 
     public long getId() {
