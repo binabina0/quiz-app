@@ -31,6 +31,8 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
                     .requestMatchers("/api/auth/**").permitAll()
+                    .requestMatchers("/quiz/**", "/question/**").authenticated()
+                    .requestMatchers("quiz/get/**").hasAnyRole("ADMIN", "USER")
                     .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
