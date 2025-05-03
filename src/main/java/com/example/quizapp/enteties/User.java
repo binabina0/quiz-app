@@ -22,6 +22,6 @@ public class User {
     private List<Role> roles;
     private boolean enabled;
 //    private String verificationCode;
-//    private String refreshToken;
+    private String refreshToken;
 
 }

@@ -38,6 +38,10 @@ public class UserDetailsDao implements UserDetails {
 //        }
     }
 
+    public static UserDetails build(User user) {
+        return new UserDetailsDao(user);
+    }
+
     public long getId() {
         return id;
     }
