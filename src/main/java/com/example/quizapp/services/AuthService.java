@@ -2,7 +2,7 @@ package com.example.quizapp.services;
 
 import com.example.quizapp.config.UserDetailsDao;
 import com.example.quizapp.dao.UserDao;
-import com.example.quizapp.jwt.JwtResponse;
+import com.example.quizapp.payload.JwtResponse;
 import com.example.quizapp.enteties.Role;
 import com.example.quizapp.enteties.User;
 import com.example.quizapp.jwt.JwtService;
@@ -15,10 +15,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
@@ -27,6 +30,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
+    private final UserServiceImpl userDetailsService;
 
     public ResponseEntity<String> register(RegisterRequest registerRequest) {
         if(userDao.findByUsername(registerRequest.getUsername()).isPresent()) {
@@ -57,8 +61,11 @@ public class AuthService {
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserDetailsDao userDetails = (UserDetailsDao)  authentication.getPrincipal();
             String jwt = jwtService.generateToken(userDetails);
+            String refreshToken = jwtService.generateRefreshToken(userDetails);
             JwtResponse jwtResponse = new JwtResponse();
             jwtResponse.setToken(jwt);
+            jwtResponse.setRefreshToken(refreshToken);
+            jwtResponse.setUsername(userDetails.getUsername());
             jwtResponse.setExpiresIn(jwtService.getExpirationTime());
             return new ResponseEntity<>(jwtResponse, HttpStatus.OK);
 
@@ -67,6 +74,27 @@ public class AuthService {
             e.printStackTrace();
             throw e;
         }
+
+    }
+
+    public Map<String, String> refreshToken(String refreshToken) {
+        String username = jwtService.extractUsername(refreshToken);
+        String accessToken;
+        if(username != null) {
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            if(jwtService.isTokenValid(refreshToken, userDetails)) {
+                accessToken = jwtService.generateToken(userDetails);
+                Map<String, String> tokens = new HashMap<>();
+                tokens.put("accessToken", accessToken);
+                tokens.put("refreshToken", refreshToken);
+                return tokens;
+            }
+
+        }
+        throw new RuntimeException("Invalid refresh token");
+
+
+
 
     }
 }

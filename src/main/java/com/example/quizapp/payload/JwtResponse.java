@@ -1,4 +1,4 @@
-package com.example.quizapp.jwt;
+package com.example.quizapp.payload;
 
 import lombok.Data;
 
@@ -6,6 +6,6 @@ import lombok.Data;
 public class JwtResponse {
     private String token;
     private long expiresIn;
-//    private String refreshToken;
+    private String refreshToken;
     private String username;
 }
