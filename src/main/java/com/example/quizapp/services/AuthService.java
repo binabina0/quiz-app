@@ -62,6 +62,7 @@ public class AuthService {
             UserDetailsDao userDetails = (UserDetailsDao)  authentication.getPrincipal();
             String jwt = jwtService.generateToken(userDetails);
             String refreshToken = jwtService.generateRefreshToken(userDetails);
+            userDao.updateRefreshToken(userDetails.getUsername(), refreshToken);
             JwtResponse jwtResponse = new JwtResponse();
             jwtResponse.setToken(jwt);
             jwtResponse.setRefreshToken(refreshToken);

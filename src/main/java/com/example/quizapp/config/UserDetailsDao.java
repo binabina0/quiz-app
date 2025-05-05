@@ -16,13 +16,19 @@ public class UserDetailsDao implements UserDetails {
     private final String username;
     private final String password;
     private final String email;
+    private final String refreshToken;
     private final Collection<? extends GrantedAuthority> authorities;
+
+    public String getRefreshToken() {
+        return refreshToken;
+    }
 
     public UserDetailsDao(User user) {
         id = user.getId();
         username = user.getUsername();
         password = user.getPassword();
         email = user.getEmail();
+        refreshToken = user.getRefreshToken();
         authorities = user.getRoles().stream()
                 .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
                 .collect(Collectors.toList());
