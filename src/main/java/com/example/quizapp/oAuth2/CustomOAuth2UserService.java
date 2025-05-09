@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -32,8 +33,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         User user = new User();
         user.setEmail((String) attributes.get("email"));
         user.setUsername((String) attributes.get("name"));
-        user.setPassword((String) attributes.get("password"));
+        user.setPassword(UUID.randomUUID().toString());
         user.setRoles(List.of(Role.USER));
+        user.setEnabled(true);
         user.setAuthProvider(User.AuthProvider.GOOGLE);
         return userDao.save(user);
     }

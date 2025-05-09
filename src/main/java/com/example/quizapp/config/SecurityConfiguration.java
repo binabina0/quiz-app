@@ -25,31 +25,22 @@ public class SecurityConfiguration {
     private final OAuthSuccessHandler oAuthSuccessHandler;
     private final CustomOAuth2UserService customOAuth2UserService;
 
-
-//    public SecurityConfiguration(
-//            JwtAuthenticationFilter jwtFilter,
-//            AuthenticationProvider authenticationProvider,
-//            OAuthSuccessHandler oAuthSuccessHandler,
-//            CustomOAuth2UserService customOAuth2UserService
-//    ) {
-//        this.authenticationProvider = authenticationProvider;
-//        this.jwtAuthenticationFilter = jwtFilter;
-//        this.oAuthSuccessHandler = oAuthSuccessHandler;
-//        this.customOAuth2UserService = customOAuth2UserService;
-//    }
 @Bean
 public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/auth/**").permitAll()
-                    .requestMatchers("/oauth/**").permitAll()
-                    .requestMatchers("/quiz/**", "/question/**").hasRole("ADMIN")
+                    .requestMatchers("/api/auth/**", "/", "/login", "/oauth2/**", "login.html","/error").permitAll()
+                    .requestMatchers("/quiz/create/**", "/question/**").hasRole("ADMIN")
                     .requestMatchers("quiz/get/**").hasAnyRole("ADMIN", "USER")
                     .anyRequest().authenticated()
             )
+            .formLogin(form -> form
+                    .loginPage("/login.html")
+                    .loginProcessingUrl("/api/auth/login")
+                    .permitAll())
             .oauth2Login(oauth2 -> oauth2
-//                    .defaultSuccessUrl("/user", true)
+                    .loginPage("/login.html")
                             .successHandler(oAuthSuccessHandler)
                             .userInfoEndpoint(userInfo -> userInfo
                                     .userService(customOAuth2UserService))
