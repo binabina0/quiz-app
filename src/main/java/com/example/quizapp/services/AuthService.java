@@ -1,6 +1,7 @@
 package com.example.quizapp.services;
 
 import com.example.quizapp.config.UserDetailsDao;
+import com.example.quizapp.config.UserServiceImpl;
 import com.example.quizapp.dao.UserDao;
 import com.example.quizapp.payload.JwtResponse;
 import com.example.quizapp.enteties.Role;
