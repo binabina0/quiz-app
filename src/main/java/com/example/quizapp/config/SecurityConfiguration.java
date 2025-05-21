@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,22 +31,20 @@ public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Excepti
     http
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                    .requestMatchers("/api/auth/**", "/", "/login", "/oauth2/**", "login.html","/error").permitAll()
+                    .requestMatchers("/api/auth/**", "/oauth2/**").permitAll()
                     .requestMatchers("/quiz/create/**", "/question/**").hasRole("ADMIN")
                     .requestMatchers("quiz/get/**").hasAnyRole("ADMIN", "USER")
                     .anyRequest().authenticated()
             )
-            .formLogin(form -> form
-                    .loginPage("/login.html")
-                    .loginProcessingUrl("/api/auth/login")
-                    .permitAll())
             .oauth2Login(oauth2 -> oauth2
-                    .loginPage("/login.html")
-                            .successHandler(oAuthSuccessHandler)
-                            .userInfoEndpoint(userInfo -> userInfo
-                                    .userService(customOAuth2UserService))
+                    .userInfoEndpoint(userInfo -> userInfo
+                            .userService(customOAuth2UserService)
+                    )
+                    .defaultSuccessUrl("/quiz/get/", true)
             )
 
+//            .oauth2Login(Customizer.withDefaults())
+            .formLogin(Customizer.withDefaults())
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
